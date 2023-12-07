@@ -2,16 +2,11 @@
 import { useFetchRestaurant } from '~/composables/restaurants';
 
 const { params } = useRoute();
-const { data: restaurant, isError } = useFetchRestaurant({ restaurantId: params.restaurantId });
+const { data: restaurant } = useFetchRestaurant({ restaurantId: params.restaurantId });
 </script>
 
 <template>
-  <VAlert v-if="isError" type="warning" class="mt-4">
-    TODO: It might be an Fetch error
-    <br>
-    You should fix that
-  </VAlert>
-  <div v-else class="grid grid-cols-[minmax(0,_1fr)_16rem] gap-6">
+  <div class="grid grid-cols-[minmax(0,_1fr)_16rem] gap-6">
     <VCard v-if="restaurant">
       <VImg
         v-for="photo in restaurant.photos"

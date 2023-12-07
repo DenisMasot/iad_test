@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { type Restaurant } from '~/composables/restaurants';
+import { averageRating } from "~/services/utils";
 
 const props = defineProps<{
   restaurant: Restaurant
 }>();
-
-const ratings = props.restaurant.reviews.map(review => review.rating)
-
-const averageRating = (function () {
-  const averageRating = ratings.reduce((acc, current) => acc + current, 0) / ratings.length
-  return averageRating.toFixed(2)
-})()
+const average = averageRating(props.restaurant.reviews, 'rating')
 </script>
 
 <template>
@@ -29,7 +24,7 @@ const averageRating = (function () {
       readonly
       :length="5"
       :size="32"
-      :model-value="averageRating"
+      :model-value="average"
       active-color="primary"
       class="mx-3"
     />
