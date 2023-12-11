@@ -28,8 +28,8 @@ onMounted(async () => {
 
 
 <template>
-  <div class="grid grid-cols-[minmax(0,_1fr)_16rem] gap-6 sm-16">
-    <VCard v-if="state.restaurant">
+  <div class="grid grid-cols-3 gap-6">
+    <VCard v-if="state.restaurant" class="col-span-3 md:col-span-2">
       <VImg
         v-for="photo in state.restaurant.photos"
         :key="photo"
@@ -66,10 +66,7 @@ onMounted(async () => {
         </div>
       </VCardText>
     </VCard>
-    <aside>
-      <VAlert type="warning">
-        TODO: this should go under the company card on small device
-      </VAlert>
+    <aside class="col-span-3 md:col-span-1">
       <ul class="pa-0">
         <RestaurantReview />
       </ul>
