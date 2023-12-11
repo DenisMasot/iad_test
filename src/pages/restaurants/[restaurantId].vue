@@ -1,36 +1,63 @@
 <script setup lang="ts">
+import { reactive } from "vue";
+import { averageRating } from "~/services/utils";
 import { useFetchRestaurant } from '~/composables/restaurants';
 
+
 const { params } = useRoute();
-const { data: restaurant } = useFetchRestaurant({ restaurantId: params.restaurantId });
+
+const state = reactive({
+  restaurant: {},
+  averageRating: "",
+});
+
+onMounted(async () => {
+  const { data } = await useFetchRestaurant({ restaurantId: params.restaurantId });
+  const restaurant = data.value;
+  console.log("restaurant", restaurant)
+
+  if (restaurant) {
+    const reviews = restaurant?.reviews;
+    const average = averageRating(reviews, 'rating');
+
+    state.restaurant = restaurant;
+    state.averageRating = average;
+  }
+});
 </script>
 
+
 <template>
-  <div class="grid grid-cols-[minmax(0,_1fr)_16rem] gap-6">
-    <VCard v-if="restaurant">
+  <div class="grid grid-cols-[minmax(0,_1fr)_16rem] gap-6 sm-16">
+    <VCard v-if="state.restaurant">
       <VImg
-        v-for="photo in restaurant.photos"
+        v-for="photo in state.restaurant.photos"
         :key="photo"
-        :src="restaurant.photos[0]"
+        :src="state.restaurant.photos[0]"
         height="250"
         cover
         gradient="to top, rgba(0,0,0,.1), rgba(0,0,0,.5)"
       >
         <VCardTitle class="!text-4xl text-white">
-          {{ restaurant.name }}
+          {{ state.restaurant.name }}
         </VCardTitle>
-        <VAlert variant="flat" type="warning" class="mx-4 inline-block">
-          TODO: display the mean rating
-          <br>
-          Vuetify has a component for this. Use this one
-        </VAlert>
+        <v-rating
+          half-increments
+          hover
+          readonly
+          :length="5"
+          :size="32"
+          :model-value="state.averageRating"
+          active-color="primary"
+          class="mx-3"
+        />
       </VImg>
       <VCardText>
         <div class="grid grid-cols-2 gap-4">
-          <RestaurantLocation :location="restaurant.location" />
+          <RestaurantLocation :location="state.restaurant.location" />
           <KeyValue icon="mdi-phone">
             <p class="text-body-1">
-              {{ restaurant.phone }}
+              {{ state.restaurant.phone }}
               <VAlert type="warning">
                 ↑ TODO: we would like to display the formatted phone
               </VAlert>
