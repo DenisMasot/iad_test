@@ -15,9 +15,10 @@ onMounted(async () => {
   const { data } = await useFetchRestaurant({ restaurantId: params.restaurantId });
   const restaurant = data.value;
   console.log("restaurant", restaurant)
-
+  
   if (restaurant) {
     const reviews = restaurant?.reviews;
+    console.log("reviews", reviews)
     const average = averageRating(reviews, 'rating');
 
     state.restaurant = restaurant;
@@ -68,7 +69,7 @@ onMounted(async () => {
     </VCard>
     <aside class="col-span-3 md:col-span-1">
       <ul class="pa-0">
-        <RestaurantReview />
+        <RestaurantReview :reviews=state.restaurant.reviews />
       </ul>
     </aside>
   </div>
