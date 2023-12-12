@@ -7,7 +7,6 @@ const { data: restaurants, isError } = useFetchRestaurants();
 let filteredRestaurants = ref([restaurants]);
 
 function updateFilter(note: number) {
-  console.log("note", note)
   if (note === 0) {
     filteredRestaurants.value = restaurants.value;
   } else {
@@ -19,7 +18,6 @@ function updateFilter(note: number) {
 
     filteredRestaurants.value = filtered;
   }
-
 }
 
 </script>
