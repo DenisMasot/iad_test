@@ -11,14 +11,18 @@ const state = reactive({
   averageRating: "",
 });
 
+
+function formatPhoneNumber(phone = "") {
+  if (!phone.length) return ""
+  return phone.replace(/(\d{2})(\d{4})(\d{4})/, '$1 $2 $3');;
+}
+
 onMounted(async () => {
   const { data } = await useFetchRestaurant({ restaurantId: params.restaurantId });
   const restaurant = data.value;
-  console.log("restaurant", restaurant)
   
   if (restaurant) {
     const reviews = restaurant?.reviews;
-    console.log("reviews", reviews)
     const average = averageRating(reviews, 'rating');
 
     state.restaurant = restaurant;
@@ -58,10 +62,7 @@ onMounted(async () => {
           <RestaurantLocation :location="state.restaurant.location" />
           <KeyValue icon="mdi-phone">
             <p class="text-body-1">
-              {{ state.restaurant.phone }}
-              <VAlert type="warning">
-                ↑ TODO: we would like to display the formatted phone
-              </VAlert>
+              {{ formatPhoneNumber(state.restaurant.phone) }}
             </p>
           </KeyValue>
         </div>
@@ -74,3 +75,4 @@ onMounted(async () => {
     </aside>
   </div>
 </template>
+
