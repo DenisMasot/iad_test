@@ -8,21 +8,15 @@ const { params } = useRoute();
 
 const state = reactive({
   restaurant: {},
-  averageRating: "",
+  averageRating: 0,
 });
-
-
-function formatPhoneNumber(phone = "") {
-  if (!phone.length) return ""
-  return phone.replace(/(\d{2})(\d{4})(\d{4})/, '$1 $2 $3');;
-}
 
 onMounted(async () => {
   const { data } = await useFetchRestaurant({ restaurantId: params.restaurantId });
   const restaurant = data.value;
   
   if (restaurant) {
-    const reviews = restaurant?.reviews;
+    const { reviews } = restaurant;
     const average = averageRating(reviews, 'rating');
 
     state.restaurant = restaurant;
@@ -62,7 +56,7 @@ onMounted(async () => {
           <RestaurantLocation :location="state.restaurant.location" />
           <KeyValue icon="mdi-phone">
             <p class="text-body-1">
-              {{ formatPhoneNumber(state.restaurant.phone) }}
+              {{ state.restaurant.display_phone }}
             </p>
           </KeyValue>
         </div>

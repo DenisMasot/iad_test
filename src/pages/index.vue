@@ -15,7 +15,6 @@ function updateFilter(note: number) {
       if (note === 1) return average < note+1
       return average >= note && average < note+1;
     });
-
     filteredRestaurants.value = filtered;
   }
 }

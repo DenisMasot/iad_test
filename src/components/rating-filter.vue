@@ -8,12 +8,12 @@ const ratingFilterItems = [
   { title: `1 star or more`, value: 1 },
 ];
 
-const yellow = ref(0);
+const rate = ref<number>(0);
 
-const emit = defineEmits("updateFilter")
+const emit = defineEmits(["updateFilter"])
 
 const changeFilter = () => {
-  emit("updateFilter", yellow.value)
+  emit("updateFilter", rate.value)
 } 
 
 </script>
@@ -23,7 +23,7 @@ const changeFilter = () => {
     <VCardText>
       <div class="flex flex-wrap items-center justify-between gap-8">
         <strong>Filter the restaurants by ratings</strong>
-        <VSelect :items="ratingFilterItems" v-model="yellow" :update:modelValue="changeFilter()" variant="solo" hide-details="auto" placeholder="all restaurants" />
+        <VSelect :items="ratingFilterItems" v-model="rate" :change="changeFilter()" variant="solo" hide-details="auto" placeholder="all restaurants" />
       </div>
     </VCardText>
   </VCard>
